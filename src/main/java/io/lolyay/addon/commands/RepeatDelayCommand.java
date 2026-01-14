@@ -5,13 +5,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.lolyay.addon.utils.timer.MsTimer;
 import meteordevelopment.meteorclient.commands.Command;
-import meteordevelopment.meteorclient.utils.network.MeteorExecutor;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class RepeatDelayCommand extends Command {
     public RepeatDelayCommand() {
@@ -29,8 +24,9 @@ public class RepeatDelayCommand extends Command {
 
                    for (int i = 0; i < times; i++) {
                        int delay = i * ms;
+                       int finalI = i;
                        MsTimer.schedule(
-                           () -> ChatUtils.sendPlayerMsg(cmd),
+                           () -> ChatUtils.sendPlayerMsg(cmd.replaceAll("(?i)%index%", String.valueOf(finalI))),
                            delay
                        );
                    }
