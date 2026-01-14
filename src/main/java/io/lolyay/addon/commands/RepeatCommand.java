@@ -4,7 +4,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
-import meteordevelopment.meteorclient.utils.network.MeteorExecutor;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.command.CommandSource;
 
@@ -22,7 +21,7 @@ public class RepeatCommand extends Command {
                    String cmd = context.getArgument("cmd", String.class);
 
                    for (int i = 0; i < times; i++) {
-                       ChatUtils.sendPlayerMsg(cmd);
+                       ChatUtils.sendPlayerMsg(cmd.replaceAll("(?i)%index%", String.valueOf(i)));
                    }
 
                    return SINGLE_SUCCESS;
