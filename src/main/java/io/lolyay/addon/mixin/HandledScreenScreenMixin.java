@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
@@ -43,6 +42,10 @@ public abstract class HandledScreenScreenMixin<T extends ScreenHandler> extends 
                 .onEnter(txt -> {
                     try {
                         int x = Integer.parseInt(txt.getText());
+                        if (screenHandler.getInventory().getStack(x) == null || screenHandler.getInventory().getStack(x).getRegistryEntry().getIdAsString().equals("minecraft:air")) {
+                            ChatUtils.error("Slot doesnt contain anything!");
+                            return;
+                        }
                         NbtElement element = ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, screenHandler.getInventory().getStack(x)).result().get();
                         ChatUtils.sendMsg(NbtHelper.toPrettyPrintedText(element));
                         mc.keyboard.setClipboard(NbtHelper.toPrettyPrintedText(element).getString());
