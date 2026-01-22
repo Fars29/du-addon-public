@@ -42,7 +42,6 @@ public abstract class HandledScreenScreenMixin<T extends ScreenHandler> extends 
                 .onEnter(txt -> {
                     try {
                         int x = Integer.parseInt(txt.getText());
-                        NbtElement element = screenHandler.getInventory().getStack(x).toNbt(mc.player.getRegistryManager());
                         if (screenHandler.getInventory().getStack(x) == null || screenHandler.getInventory().getStack(x).getRegistryEntry().getIdAsString().equals("minecraft:air")) {
                             ChatUtils.error("Slot doesnt contain anything!");
                             return;
