@@ -17,7 +17,9 @@ public class ClickSlotCommand extends Command {
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.then(argument("slot", IntegerArgumentType.integer())
                .then(argument("button", IntegerArgumentType.integer())
-               .then(argument("action", EnumArgumentType.enumArgument(SlotActionType.PICKUP))
+
+
+                       .then(argument("action", EnumArgumentType.enumArgument(SlotActionType.PICKUP))
                .executes((context) -> {
                    assert mc.interactionManager != null; // Again, you shouldn't be able to run commands if you're not in a game
                    int slot = context.getArgument("slot", Integer.class);
@@ -26,6 +28,26 @@ public class ClickSlotCommand extends Command {
                    int syncId = mc.currentScreen instanceof GenericContainerScreen screen ? screen.getScreenHandler().syncId : 0;
                    mc.interactionManager.clickSlot(syncId, slot, button, action, mc.player);
                    return SINGLE_SUCCESS;
-               }))));
+               }))
+
+                       .then(argument("times", IntegerArgumentType.integer())
+                           .then(argument("type", IntegerArgumentType.integer(0, SlotActionType.values().length - 1))
+                               .executes(context -> {
+                                   assert mc.interactionManager != null; // Again, you shouldn't be able to run commands if you're not in a game
+                                   int slot = context.getArgument("slot", Integer.class);
+                                   int button = context.getArgument("button", Integer.class);
+                                   SlotActionType action = SlotActionType.values()[context.getArgument("type", Integer.class)];
+                                   int times = context.getArgument("times", Integer.class);
+                                   for (int i = 0; i < times; i++) {
+                                       int syncId = mc.currentScreen instanceof GenericContainerScreen screen ? screen.getScreenHandler().syncId : 0;
+                                       mc.interactionManager.clickSlot(syncId, slot, button, action, mc.player);
+                                   }
+
+                                   return SINGLE_SUCCESS;
+                               })
+                           ))
+
+
+               ));
     }
 }
