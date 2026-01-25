@@ -35,7 +35,10 @@ public class ForEachPlayerCommand extends Command {
                         if (player.getProfile() == null // Try to filter out NPCs
                                 || (player.getLatency() == 0 && !MinecraftClient.getInstance().isInSingleplayer())
                                 || player.getProfile().properties() == null
-                                || player.getProfile().id().equals(UUID.fromString("00000000-0000-0000-0000-000000000000")))
+                            || player.getProfile().id().equals(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                            || player.getProfile().name().isBlank()
+                            || player.getProfile().name().contains("§")
+                        )
                             continue;
 
                         if (player.getProfile().name().equals(mc.player.getGameProfile().name())
